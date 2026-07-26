@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SJASQ PE Uniform Receipt System</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Courier+Prime:wght@400;700&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brandmark">
+    <div class="tape"></div>
+    <div>
+      <h1 id="brandTitle">SJASQ PE Uniform Receipt System</h1>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-ghost btn-sm" id="toggleHistoryBtn">History</button>
+    <button class="btn btn-ghost btn-sm" id="clearBtn">New Receipt</button>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- ============ LEFT: FORM ============ -->
+  <div>
+
+    <div class="panel" id="settingsPanel" style="display:none;">
+      <h2>Shop Settings</h2>
+      <div class="row two">
+        <div class="field"><label>Shop Name</label><input type="text" id="shopName" value="St. Joseph Academy of Sariaya, Quezon"></div>
+        <div class="field"><label>Tagline</label><input type="text" id="shopTagline" value="School &amp; PE Uniforms"></div>
+      </div>
+      <div class="row two">
+        <div class="field"><label>Address</label><input type="text" id="shopAddress" value="Sariaya, Quezon, Philippines"></div>
+        <div class="field"><label>Contact No.</label><input type="text" id="shopContact" value=" 0926-696-6790"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Order Info</h2>
+      <div class="row">
+        <div class="field"><label>Receipt No.</label><input type="text" id="receiptNo" readonly title="Auto-generated — cannot be edited"></div>
+      </div>
+      <div class="row two">
+        <div class="field"><label>Delivery Date</label><input type="date" id="deliveryDate"></div>
+        <div class="field"><label>Claim Date</label><input type="date" id="claimDate"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Add Uniform Item</h2>
+      <div class="row two">
+        <div class="field">
+          <label>Level</label>
+          <select id="selLevel"></select>
+        </div>
+        <div class="field">
+          <label>Item</label>
+          <select id="selItem"></select>
+        </div>
+      </div>
+
+      <table class="sizegrid" id="sizeGridTable">
+        <thead>
+          <tr><th>Size</th><th class="num">Price</th><th class="num">Qty</th><th class="num">Amount</th></tr>
+        </thead>
+        <tbody id="sizeGridBody"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">TOTAL</td>
+            <td class="num" id="gridQtyTotal">0</td>
+            <td class="num" id="gridAmtTotal">₱0.00</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <button class="btn btn-brass btn-block" id="addItemBtn" style="margin-top:12px;">+ Add to Receipt</button>
+
+      <div class="cart" id="cartList">
+        <div class="cart-empty">No items added yet.</div>
+      </div>
+    </div>
+
+    <div class="panel" id="historyPanel" style="display:none;">
+      <h2>Saved Receipts</h2>
+      <div id="historyList"><div class="cart-empty">No saved receipts yet.</div></div>
+    </div>
+
+  </div>
+
+  <!-- ============ RIGHT: RECEIPT PREVIEW ============ -->
+  <div class="receipt-wrap">
+
+    <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+      <button class="btn btn-thread" id="saveBtn">💾 Save Receipt</button>
+      <button class="btn btn-brass" id="pdfBtn">⬇ Download PDF</button>
+      <button class="btn btn-ghost" id="printBtn">🖨 Print</button>
+    </div>
+
+    <div id="receipt">
+      <div class="receipt-tape"></div>
+      <div class="receipt-head">
+        <p class="shopname" id="rShopName">St. Joseph Academy of Sariaya, Quezon</p>
+        <p class="meta"><span id="rAddress">Sariaya, Quezon, Philippines</span> · <span id="rContact">0917-000-0000</span></p>
+      </div>
+
+      <div class="receipt-body">
+        <div class="rmeta-grid">
+          <div><span>Receipt No.</span><b id="pReceiptNo">—</b></div>
+          <div><span>Delivery Date</span><b id="pDeliveryDate">—</b></div>
+          <div><span>Claim Date</span><b id="pClaimDate">—</b></div>
+        </div>
+
+        <table class="items">
+          <thead>
+            <tr><th>Item</th><th class="num">Qty</th><th class="num">Price</th><th class="num">Amount</th></tr>
+          </thead>
+          <tbody id="pItems"></tbody>
+        </table>
+
+        <div class="totals">
+          <div class="line grand"><span>Total</span><span id="pTotal">₱0.00</span></div>
+        </div>
+
+      </div>
+
+      <div class="receipt-scallop"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+
+<script src="script.js"></script>
+</body>
+</html>

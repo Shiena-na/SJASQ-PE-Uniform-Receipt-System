@@ -153,7 +153,6 @@ function render(){
   // ---- meta ----
   $('pReceiptNo').textContent = $('receiptNo').value || "—";
   $('pDeliveryDate').textContent = fmtDate($('deliveryDate').value);
-  $('pClaimDate').textContent = fmtDate($('claimDate').value);
 
   // ---- cart list (editor) ----
   const cartList = $('cartList');
@@ -191,7 +190,7 @@ function render(){
 }
 
 // live-update on any relevant input change
-['receiptNo','deliveryDate','claimDate',
+['receiptNo','deliveryDate',
  'shopName','shopTagline','shopAddress','shopContact'].forEach(id=>{
   $(id).addEventListener('input', render);
   $(id).addEventListener('change', render);
@@ -204,7 +203,6 @@ $('clearBtn').addEventListener('click', async () => {
   currentId = null;
   $('receiptNo').value = await genReceiptNo();
   $('deliveryDate').value = todayISO();
-  $('claimDate').value = '';
   render();
   toast("New receipt started");
 });
@@ -256,7 +254,6 @@ async function saveReceipt(){
     id,
     receiptNo: $('receiptNo').value || await genReceiptNo(),
     deliveryDate: $('deliveryDate').value,
-    claimDate: $('claimDate').value,
     cart, total, savedAt: new Date().toISOString()
   };
 
@@ -315,7 +312,6 @@ window.loadReceipt = async function(id){
     cart = rec.cart || [];
     $('receiptNo').value = rec.receiptNo;
     $('deliveryDate').value = rec.deliveryDate;
-    $('claimDate').value = rec.claimDate;
     render();
     toast("Receipt loaded: " + rec.receiptNo);
     window.scrollTo({top:0, behavior:'smooth'});
